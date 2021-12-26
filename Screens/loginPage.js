@@ -18,8 +18,8 @@ const loginPage = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user);
-        navigation.navigate("Home");
+        //console.log(user);
+        //navigation.navigate("Home");
       })
       .catch((error) => {
         alert(error.message);
