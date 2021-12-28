@@ -21,8 +21,6 @@ const homePage = ({ navigation }) => {
     <View style={styles.container}>
       <Text>Home Page</Text>
       <Text>{user.email}</Text>
-      <Text onPress={handleSignOut}>sign out</Text>
-      <Text>TEST</Text>
     </View>
   );
 };
