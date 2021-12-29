@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { auth } from "../firebase";
+import React, { useState } from "react";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, doc, setDoc } from "firebase/firestore";
+
 import {
   StyleSheet,
   Text,
@@ -13,14 +15,19 @@ import {
 const registerPage = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("USER REGISTERED");
-        console.log(user);
-        navigation.navigate("Home");
+      .then((cred) => {
+        const usersCollectionsRef = collection(db, "users");
+        setDoc(doc(usersCollectionsRef, cred.user.uid), {
+          firstName: first,
+          lastName: last,
+        }).then(() => {
+          console.log("user added");
+        });
       })
       .catch((error) => {
         alert(error.message);
@@ -36,6 +43,18 @@ const registerPage = ({ navigation }) => {
         <TextInput
           value={email}
           onChangeText={(text) => setEmail(text)}
+          style={styles.input}
+        ></TextInput>
+        <Text style={styles.label}>First Name</Text>
+        <TextInput
+          value={first}
+          onChangeText={(text) => setFirst(text)}
+          style={styles.input}
+        ></TextInput>
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          value={last}
+          onChangeText={(text) => setLast(text)}
           style={styles.input}
         ></TextInput>
         <Text style={styles.label}>Password</Text>

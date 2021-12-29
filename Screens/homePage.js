@@ -1,26 +1,37 @@
 //rnfes
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { doc, getDoc, setDoc, collection } from "firebase/firestore";
 
 const homePage = ({ navigation }) => {
-  const user = auth.currentUser;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigation.navigate("Login");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
+  useEffect(() => {
+    const usersDocRef = doc(db, "users", auth.currentUser.uid);
+    async function fetchData() {
+      const userSnap = await getDoc(usersDocRef);
+      if (userSnap.exists()) {
+        console.log("Document data:", userSnap.data());
+        setUser(userSnap.data());
+        setIsLoaded(true);
+      } else {
+        console.log("No such document!");
+        alert("User information retrival error");
+      }
+    }
+    fetchData();
+  }, []);
 
-  return (
+  return isLoaded ? (
     <View style={styles.container}>
       <Text>Home Page</Text>
-      <Text>{user.email}</Text>
+      <Text>{user.firstName}</Text>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <Text>loading</Text>
     </View>
   );
 };

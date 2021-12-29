@@ -14,7 +14,7 @@ import LoginScreen from "./Screens/loginPage";
 import RegisterScreen from "./Screens/registerPage";
 import ProfileScreen from "./Screens/profilePage";
 import SearchScreen from "./Screens/searchPage";
-import PostScreen from "./Screens/postPage";
+import CreateScreen from "./Screens/createPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,9 +41,12 @@ export default function App() {
         // <Stack.Navigator initialRouteName="Profile">
         //   <Stack.Screen name="Profile" component={ProfileScreen} />
         // </Stack.Navigator>
-        <Tab.Navigator initialRouteName="Home">
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={{ headerShown: false }}
+        >
           <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Post" component={PostScreen} />
+          <Tab.Screen name="Create" component={CreateScreen} />
           <Tab.Screen name="Seach" component={SearchScreen} />
           <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
