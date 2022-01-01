@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { auth, db } from "../firebase";
-import { doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const homePage = ({ navigation }) => {
   const [isLoaded, setIsLoaded] = useState(false);
