@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, SectionList } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { collection, query, where, getDocs, doc } from "firebase/firestore";
@@ -69,12 +69,26 @@ const profilePage = () => {
       <View style={styles.cardsWrapper}>
         {isLoaded ? (
           <View>
-            <FlatList
-              keyExtractor={(item, index) => index}
-              data={incompletedHabits}
+            <SectionList
+              keyExtractor={(item, index) => item + index}
+              sections={[
+                {
+                  title: "Incomplete",
+                  data: incompletedHabits,
+                },
+                {
+                  title: "Complete",
+                  data: completedHabits,
+                },
+              ]}
               renderItem={({ item }) => {
                 return <Habit data={item}></Habit>;
               }}
+              renderSectionHeader={({ section: { title } }) => (
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionText}>{title}</Text>
+                </View>
+              )}
             />
           </View>
         ) : (
@@ -101,9 +115,16 @@ const styles = StyleSheet.create({
   },
   cardsWrapper: {
     paddingHorizontal: 20,
-    paddingTop: 80,
+    paddingTop: 20,
   },
   cards: {
-    marginTop: 30,
+    //marginTop: 30,
+  },
+  sectionHeader: {
+    alignItems: "center",
+    backgroundColor: "black",
+  },
+  sectionText: {
+    color: "white",
   },
 });
