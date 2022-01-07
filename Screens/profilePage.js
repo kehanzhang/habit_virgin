@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, SectionList } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { collection, query, where, getDocs, doc } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Habit from "../components/Habit";
 
